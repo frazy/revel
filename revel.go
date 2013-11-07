@@ -59,6 +59,9 @@ var (
 	CookieHttpOnly bool
 	CookieSecure   bool
 
+	// Template case senitive in views folder
+	TemplateCaseSensitive bool
+	
 	// Delimiters to use when rendering templates
 	TemplateDelims string
 
@@ -156,6 +159,7 @@ func Init(mode, importPath, srcPath string) {
 	CookiePrefix = Config.StringDefault("cookie.prefix", "REVEL")
 	CookieHttpOnly = Config.BoolDefault("cookie.httponly", false)
 	CookieSecure = Config.BoolDefault("cookie.secure", false)
+	TemplateCaseSensitive = Config.BoolDefault("template.case.sensitive", false)
 	TemplateDelims = Config.StringDefault("template.delimiters", "")
 	if secretStr := Config.StringDefault("app.secret", ""); secretStr != "" {
 		secretKey = []byte(secretStr)
