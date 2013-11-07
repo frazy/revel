@@ -211,6 +211,7 @@ func (loader *TemplateLoader) Refresh() *Error {
 			if os.PathSeparator == '\\' {
 				templateName = strings.Replace(templateName, `\`, `/`, -1) // `
 			}
+			templateName = getTemplateName(templateName)
 
 			// If we already loaded a template of this name, skip it.
 			if _, ok := loader.templatePaths[templateName]; ok {
@@ -329,7 +330,7 @@ func parseTemplateError(err error) (templateName string, line int, description s
 // this case, if a template is returned, it may still be usable.)
 func (loader *TemplateLoader) Template(name string) (Template, error) {
 	// Look up and return the template.
-	tmpl := loader.templateSet.Lookup(name)
+	tmpl := loader.templateSet.Lookup(getTemplateName(name))
 
 	// This is necessary.
 	// If a nil loader.compileError is returned directly, a caller testing against
@@ -401,4 +402,11 @@ func Slug(text string) string {
 	text = whiteSpacePattern.ReplaceAllString(text, separator)
 	text = strings.Trim(text, separator)
 	return text
+}
+
+func getTemplateName(name string) string {
+	if !TemplateCaseSensitive {
+		name = strings.ToLower(name)
+	}
+	return name
 }
